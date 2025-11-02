@@ -36,9 +36,18 @@ func (a *AptPlugin) Run(params map[string]any) (string, error) {
 	return "APT run completed", nil
 }
 
+type AptRunner struct {
+	inner *AptPlugin
+}
+
+func (a *AptRunner) Run(params map[string]any) (string, error) {
+	return a.inner.Run(params)
+}
+
 func main() {
 	if len(os.Args) > 1 && os.Args[1] == "serve" {
-		sdk.Serve(&AptPlugin{})
+		plugin := &AptPlugin{}
+		sdk.Serve(&AptRunner{inner: plugin})
 		return
 	}
 	fmt.Println("ECAC APT plugin binary")
