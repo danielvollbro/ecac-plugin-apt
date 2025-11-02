@@ -4,6 +4,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"os"
+
+	sdk "github.com/danielvollbro/ecac-plugin-sdk"
 )
 
 type Config struct {
@@ -31,4 +34,12 @@ func (a *AptPlugin) Run(params map[string]any) (string, error) {
 		fmt.Println("Installing: ", p)
 	}
 	return "APT run completed", nil
+}
+
+func main() {
+	if len(os.Args) > 1 && os.Args[1] == "serve" {
+		sdk.Serve(&AptPlugin{})
+		return
+	}
+	fmt.Println("ECAC APT plugin binary")
 }
